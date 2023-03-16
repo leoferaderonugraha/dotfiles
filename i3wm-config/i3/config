@@ -185,3 +185,6 @@ bindsym $mod+r mode "resize"
 bar {
         status_command i3status
 }
+
+# Custom commands
+bindsym $mod+p exec pavucontrol
