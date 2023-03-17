@@ -193,4 +193,4 @@ bindsym $mod+p exec pavucontrol
 # Wallpaper
 exec --no-startup-id feh --bg-fill ~/Downloads/IMG_20220607_162102.jpg
 # Polybar
-exec_always --no-startup-id ~/.config/polybar/launch.sh --hack
+exec_always --no-startup-id ~/.config/polybar/launch.sh --shapes
