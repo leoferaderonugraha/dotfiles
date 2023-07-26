@@ -4,8 +4,8 @@ let g:polyglot_disabled = ['vue']" Plugin Manager
 
 call plug#begin('~/.vim/plugged')
 " Customize UI
-    Plug 'vim-airline/vim-airline'
-    Plug 'vim-airline/vim-airline-themes'
+    " Plug 'vim-airline/vim-airline'
+    " Plug 'vim-airline/vim-airline-themes'
     " Plug 'kien/ctrlp.vim'
     Plug 'scrooloose/nerdtree'
     " Plug 'tpope/vim-surround'
@@ -17,10 +17,12 @@ call plug#begin('~/.vim/plugged')
     Plug 'bfrg/vim-cpp-modern'
     Plug 'octol/vim-cpp-enhanced-highlight'
     Plug 'editorconfig/editorconfig-vim'
-    Plug 'jiangmiao/auto-pairs'
+    " Plug 'jiangmiao/auto-pairs'
     Plug 'sheerun/vim-polyglot'
     " Plug 'ryanoasis/vim-devicons'
     " Plug 'skammer/vim-css-color' " This plugin takes a lot of times to load
+    Plug 'tpope/vim-commentary'
+    Plug 'alvan/vim-closetag'
     
 " Autocomplete
     "Plug 'valloric/youcompleteme'
@@ -41,10 +43,13 @@ call plug#begin('~/.vim/plugged')
 " For working with flutter project
     Plug 'dart-lang/dart-vim-plugin'
     Plug 'natebosch/vim-lsc'
-    "Plug 'natebosch/vim-lsc-dart'
+    Plug 'natebosch/vim-lsc-dart'
 
 " Rust
     Plug 'rust-lang/rust.vim'
+
+" NodeJS
+    Plug 'prisma/vim-prisma'
 
 " Initialize plugin system
 call plug#end()
@@ -103,7 +108,7 @@ let g:lsc_auto_map = v:true
 " let g:user_emmet_leader_key='<C-M>'
 
 " Use Dart Formatter
-nnoremap df :DartFmt<CR>
+"nnoremap df :DartFmt<CR>
 
 " ---------- CoC autocomplete config ----------
 " symbol rename
@@ -120,8 +125,8 @@ set completeopt=menu
 nmap <Space>n :NERDTreeToggle<CR>
 
 " Switch between tabs
-nnoremap <C-j> :tabprevious<CR>
-nnoremap <C-k> :tabnext<CR>
+nnoremap <C-h> :tabprevious<CR>
+nnoremap <C-l> :tabnext<CR>
 nnoremap <C-n> :tabnew<CR>
 
 " For find occurences with grep/vimgrep
@@ -131,9 +136,13 @@ nnoremap <C-]> :cnext<CR>
 " Clear highlight from last search
 nnoremap <Space><Space> :noh<return>
 
+" Close all tabs except current
+nnoremap <Space>q :tabonly<CR>
+
 " ---------- FZF shortcut ----------
 nnoremap <C-f> :Files<CR>
-nnoremap <C-g> :Ag<CR>
+" nnoremap <C-g> :Ag<CR>
+nnoremap <C-g> :Rg<CR>
 
 
 inoremap <expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
@@ -150,7 +159,9 @@ map <F3> :source ~/.vim_session <CR>
 " ---------- Utils ----------
 "
 " Open windows
-map <C-l> :Windows<CR>
+map <C-q> :Windows<CR>
+" Delete from cursor to beginning of line
+nnoremap <S-f> v0d
 
 
 syntax on
@@ -172,9 +183,9 @@ inoremap jl <ESC>
 map <C-c> :%y+<CR>
 
 " ---------- UI ----------
-" colorscheme challenger_deep
+colorscheme challenger_deep
 " colorscheme dogrun
-colorscheme iceberg
+" colorscheme iceberg
 set background=dark
 set colorcolumn=80,100 " Max line length
 set cursorline " Highlight current line
@@ -186,9 +197,30 @@ let g:NERDTreeHijackNetrw=1 " Disable NERDTree on startup
 autocmd FileType dart setlocal shiftwidth=2 tabstop=2 expandtab
 autocmd FileType js setlocal shiftwidth=2 tabstop=2 expandtab
 
+" Movements
+nnoremap <C-j> <C-d>zz
+nnoremap <C-k> <C-u>zz
+nnoremap n nzz
+nnoremap N Nzz
+
+
+" Copilot
+inoremap <silent><expr> <C-k> copilot#Accept("")
+let g:copilot_no_tab_map = 1
+
 " Development
 " let g:fzf_action = {'enter': 'tab split'}
 let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -l -g ""'
 let g:rustfmt_autosave = 1
 let g:rustfmt_emit_files = 1
 let g:rustfmt_fail_silently = 0
+set number
+set relativenumber
+let g:closetag_xhtml_filenames = '*.blade.php'
+nnoremap <Space>g :tabnew <bar> :G<CR>
+nnoremap <Space>l :Locate / <CR>
+vnoremap <Tab> <S->>
+vnoremap <S-Tab> <S-<>
+set guicursor=n-v-c-i:block " Set cursor to block in normal, visual, command and insert mode
+set guicursor-=a:blinkon0 " Disable cursor blinking
+set wildmode=longest,list,full " Command-line completion mode
