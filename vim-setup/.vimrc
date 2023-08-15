@@ -234,3 +234,40 @@ vnoremap <S-Tab> <S-<>
 set guicursor=n-v-c-i:block " Set cursor to block in normal, visual, command and insert mode
 set guicursor-=a:blinkon0 " Disable cursor blinking
 set wildmode=longest,list,full " Command-line completion mode
+
+" Custom vim functions, because why not :)
+"" Async run command and show output in a new tab
+function! GetSystemOutputAsync(command)
+    new " or vnew for vertical split
+    setlocal buftype=nofile
+    setlocal bufhidden=hide
+    setlocal noswapfile
+
+    let job_id = jobstart(a:command, {'on_stdout': 'OnStdout'})
+
+    if job_id <= 0
+        execute "normal i" . "Failed to start job"
+    endif
+
+    let new_win_id = win_getid()
+    call settabvar(tabpagenr(), 'output_win_id', new_win_id)
+endfunction
+
+function! OnStdout(job_id, data, event)
+    let cur_win_id = win_getid()
+    let job_win_id = gettabvar(tabpagenr(), 'output_win_id')
+    
+    if a:event == 'stdout' && cur_win_id == job_win_id
+        call setline('$', a:data)
+    elseif a:event == 'stdout' && cur_win_id != job_win_id
+        " Stop the job if the window was closed
+        if win_gotoid(job_win_id) == 0
+            if exists('a:job_id')
+                call jobstop(a:job_id)
+            endif
+            call settabvar(tabpagenr(), 'output_win_id', 0)
+        endif
+    endif
+endfunction
+
+command! -nargs=1 ExecAsync call GetSystemOutputAsync(<f-args>)
