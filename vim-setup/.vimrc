@@ -270,4 +270,12 @@ function! OnStdout(job_id, data, event)
     endif
 endfunction
 
+function! ExecAsyncPrompt()
+    let command = input('Execute Command: ')
+    call GetSystemOutputAsync(command)
+endfunction
+
 command! -nargs=1 ExecAsync call GetSystemOutputAsync(<f-args>)
+
+" Bindings
+nnoremap <Space>e :call ExecAsyncPrompt()<CR>
