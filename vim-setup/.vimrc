@@ -236,6 +236,15 @@ set guicursor-=a:blinkon0 " Disable cursor blinking
 set wildmode=longest,list,full " Command-line completion mode
 
 " Custom vim functions, because why not :)
+"" Utils
+function! Repeat(s, n)
+    let l:result = ""
+    for i in range(a:n)
+        let l:result .= a:s
+    endfor
+    return l:result
+endfunction
+
 "" Async run command and show output in a new tab
 function! GetSystemOutputAsync(command)
     new " or vnew for vertical split
@@ -243,7 +252,11 @@ function! GetSystemOutputAsync(command)
     setlocal bufhidden=hide
     setlocal noswapfile
 
-    let job_id = jobstart(a:command, {'on_stdout': 'OnStdout'})
+    let job_id = jobstart(a:command, {
+        \ 'on_stdout': function('_CallbackHandler'),
+        \ 'on_stderr': function('_CallbackHandler'),
+        \ 'on_exit': function('_CallbackHandler')
+        \ })
 
     if job_id <= 0
         execute "normal i" . "Failed to start job"
@@ -253,19 +266,46 @@ function! GetSystemOutputAsync(command)
     call settabvar(tabpagenr(), 'output_win_id', new_win_id)
 endfunction
 
-function! OnStdout(job_id, data, event)
+function! _Callback(job_id, data, event)
+    if a:event == 'stdout'
+        call setline('$', a:data)
+    elseif a:event == 'stderr'
+        " error is a list somehow, and have 1 error initially
+        let err_len = len(a:data) - 1
+        if err_len > 0
+            call setline('$', 'Error(s) occured: ' . err_len . ' lines')
+            call append(line('$'), Repeat('=', 80))
+
+            for err in a:data " use a:data[:err_len - 1] to skip the last empty line
+                call append(line('$'), err)
+            endfor
+
+            call append(line('$'), Repeat('=', 80))
+            call append(line('$'), '')
+        endif
+    elseif a:event == 'exit'
+        call append(line('$'), 'Process exited with code ' . a:data)
+    endif
+endfunction
+
+function! _CallbackHandler(job_id, data, event)
     let cur_win_id = win_getid()
     let job_win_id = gettabvar(tabpagenr(), 'output_win_id')
-    
-    if a:event == 'stdout' && cur_win_id == job_win_id
-        call setline('$', a:data)
-    elseif a:event == 'stdout' && cur_win_id != job_win_id
+
+    if cur_win_id == job_win_id
+        call _Callback(a:job_id, a:data, a:event)
+    elseif cur_win_id != job_win_id
         " Stop the job if the window was closed
-        if win_gotoid(job_win_id) == 0
+        let is_window_open = win_gotoid(job_win_id)
+        if is_window_open == 0
             if exists('a:job_id')
                 call jobstop(a:job_id)
             endif
             call settabvar(tabpagenr(), 'output_win_id', 0)
+        else
+            " Otherwise, call the handler and return to the previous window
+            call _Callback(a:job_id, a:data, a:event)
+            call win_gotoid(cur_win_id)
         endif
     endif
 endfunction
