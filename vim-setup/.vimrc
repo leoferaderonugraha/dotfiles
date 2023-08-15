@@ -271,7 +271,7 @@ function! OnStdout(job_id, data, event)
 endfunction
 
 function! ExecAsyncPrompt()
-    let command = input('Execute Command: ')
+    let command = input('Spawn process: ')
     call GetSystemOutputAsync(command)
 endfunction
 
