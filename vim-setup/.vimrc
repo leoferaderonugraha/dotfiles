@@ -161,7 +161,7 @@ map <F3> :source ~/.vim_session <CR>
 " Open windows
 map <C-q> :Windows<CR>
 " Delete from cursor to beginning of line
-nnoremap <S-f> v0d
+" nnoremap <S-f> v0d
 
 
 syntax on
@@ -197,11 +197,21 @@ let g:NERDTreeHijackNetrw=1 " Disable NERDTree on startup
 autocmd FileType dart setlocal shiftwidth=2 tabstop=2 expandtab
 autocmd FileType js setlocal shiftwidth=2 tabstop=2 expandtab
 
-" Movements
+" Movements and camera views
 nnoremap <C-j> <C-d>zz
 nnoremap <C-k> <C-u>zz
 nnoremap n nzz
 nnoremap N Nzz
+" Scroll wide of the screen to the left
+nnoremap <S-h> 2zH
+" Scroll wide of the screen to the right
+nnoremap <S-l> 2zL
+" Lookup to the top / current line to bottom
+nnoremap <S-k> zb
+" Lookup to the bottom / current line to top
+nnoremap <S-j> zt
+" Set current line to center
+nnoremap <S-m> zz
 
 
 " Copilot

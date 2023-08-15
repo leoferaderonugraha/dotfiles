@@ -49,3 +49,7 @@
 - `:s/foo/bar/gc`: replace all occurrences of `foo` with `bar` on the current line, with confirmation
 - `:%s/foo/bar/g`: replace all occurrences of `foo` with `bar` in the document
 - `:%s/foo/bar/gc`: replace all occurrences of `foo` with `bar` in the document, with confirmation
+
+## Some Tips
+- Remove something in between: `ci`
+    - eg: `ci"` to replace the content within ""
