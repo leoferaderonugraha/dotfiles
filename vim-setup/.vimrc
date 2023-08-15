@@ -273,15 +273,10 @@ function! _Callback(job_id, data, event)
         " error is a list somehow, and have 1 error initially
         let err_len = len(a:data) - 1
         if err_len > 0
-            call setline('$', 'Error(s) occured: ' . err_len . ' lines')
-            call append(line('$'), Repeat('=', 80))
-
-            for err in a:data " use a:data[:err_len - 1] to skip the last empty line
+            call setline('$', a:data[0])
+            for err in a:data[1:] " use a:data[:err_len - 1] to skip the last empty line
                 call append(line('$'), err)
             endfor
-
-            call append(line('$'), Repeat('=', 80))
-            call append(line('$'), '')
         endif
     elseif a:event == 'exit'
         call append(line('$'), 'Process exited with code ' . a:data)
