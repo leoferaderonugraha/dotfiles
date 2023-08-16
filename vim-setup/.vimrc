@@ -226,6 +226,7 @@ let g:rustfmt_emit_files = 1
 let g:rustfmt_fail_silently = 0
 set number
 set relativenumber
+set hlsearch
 let g:closetag_xhtml_filenames = '*.blade.php'
 nnoremap <Space>g :tabnew <bar> :G<CR>
 nnoremap <Space>l :Locate / <CR>
