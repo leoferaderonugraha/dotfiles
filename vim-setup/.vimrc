@@ -51,6 +51,9 @@ call plug#begin('~/.vim/plugged')
 " NodeJS
     Plug 'prisma/vim-prisma'
 
+" LSP Manager (requires nvim)
+    Plug 'williamboman/mason.nvim'
+
 " Initialize plugin system
 call plug#end()
 
@@ -183,8 +186,8 @@ inoremap jl <ESC>
 map <C-c> :%y+<CR>
 
 " ---------- UI ----------
-" colorscheme challenger_deep
-colorscheme dogrun
+colorscheme challenger_deep
+" colorscheme dogrun
 " colorscheme iceberg
 set background=dark
 set colorcolumn=80,100 " Max line length
