@@ -9,7 +9,8 @@ vim.o.packpath = vim.o.runtimepath
 vim.cmd('source ~/.vimrc')
 
 -- load mason
-require("mason").setup()
+-- require("mason").setup()
 
 -- Load the handwritten plugins
 dofile(vim.fn.stdpath('config') .. '/lua/async-exec.lua')
+dofile(vim.fn.stdpath('config') .. '/lua/exec.lua')
