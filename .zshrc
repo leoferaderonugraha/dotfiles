@@ -105,6 +105,8 @@ alias e="emacs -nw"
 alias ducwd="sudo du -hd 1 . | sort -hr"
 alias poetry="python3 -m poetry"
 alias awslocal="aws --endpoint-url=http://localhost:4566"
+alias mkctl="sudo microk8s kubectl"
+alias pa="php artisan"
 
 if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
   exec tmux
@@ -115,3 +117,13 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 export PATH="$PATH:$HOME/dev/flutter/bin"
+export PATH="$PATH:$HOME/.local/bin"
+export PATH="$PATH:$HOME/.local/share/gem/ruby/3.2.0/bin"
+
+# Load ocaml environment
+eval $(opam env)
+
+# Erlang build tools
+export PATH=/home/rion/.cache/rebar3/bin:$PATH
+# Java
+export PATH=/usr/lib/jvm/java-17-openjdk/bin:$PATH
