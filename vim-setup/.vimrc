@@ -154,7 +154,7 @@ nnoremap <C-f> :Files<CR>
 " nnoremap <C-g> :Ag<CR>
 nnoremap <C-g> :Rg<CR>
 
-
+" use <C-y> when pum is visible to accept the selected completion item
 inoremap <expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <expr> <S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
 
