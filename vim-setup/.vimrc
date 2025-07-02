@@ -2,6 +2,19 @@
 let g:polyglot_disabled = ['vue']" Plugin Manager
 let mapleader=','
 
+" ---------- General settings ----------
+syntax on
+set expandtab
+" set tabstop=4
+set softtabstop=4
+set shiftwidth=4 smarttab
+set number
+set list " Show invisible characters
+
+
+set autoread " Enable auto reload file
+set nowrap " Disable auto-wrap
+
 
 call plug#begin('~/.vim/plugged')
 " Customize UI
@@ -126,7 +139,8 @@ let g:lsc_auto_map = v:true
 " ---------- CoC autocomplete config ----------
 " symbol rename
 nmap <Space>rn <Plug>(coc-rename)
-nmap <silent> <Space>d <Plug>(coc-definition)
+" nmap <silent> <Space>d <Plug>(coc-definition)
+nmap <silent> <Space>d :call CocAction('jumpDefinition', 'tabe')<CR>
 nmap <silent> <Space>i <Plug>(coc-implementation)
 nmap <silent> <Space>f <Plug>(coc-references)
 nmap <silent> <Space>t <Plug>(coc-type-definition)
@@ -155,8 +169,9 @@ nnoremap <C-f> :Files<CR>
 nnoremap <C-g> :Rg<CR>
 
 " use <C-y> when pum is visible to accept the selected completion item
-inoremap <expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <expr> <S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
+inoremap <expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
+inoremap <expr> <TAB> pumvisible() ? coc#pum#next(1) : "\<TAB>"
+inoremap <expr> <S-TAB> pumvisible() ? coc#pum#prev(1) : "\<S-TAB>"
 
 " ---------- Managing sessions ----------
 "
@@ -176,16 +191,6 @@ nnoremap <Space>w :Windows<CR>
 " nnoremap <S-f> v0d
 
 
-syntax on
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
-set expandtab
-set number
-
-
-set autoread " Enable auto reload file
-set nowrap " Disable auto-wrap
 " Exit insert/edit mode
 inoremap jl <ESC>
 
@@ -207,8 +212,8 @@ let g:airline_theme='base16'
 let g:NERDTreeHijackNetrw=1 " Disable NERDTree on startup
 
 " ---------- File types configuration ----------
-autocmd FileType dart setlocal shiftwidth=2 tabstop=2 expandtab
-autocmd FileType js setlocal shiftwidth=2 tabstop=2 expandtab
+" autocmd FileType dart setlocal shiftwidth=2 tabstop=2 expandtab
+" autocmd FileType js setlocal shiftwidth=2 tabstop=2 expandtab
 
 " Movements and camera views
 nnoremap <C-j> <C-d>zz
