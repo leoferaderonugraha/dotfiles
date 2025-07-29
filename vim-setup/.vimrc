@@ -258,6 +258,7 @@ set guicursor-=a:blinkon0 " Disable cursor blinking
 set wildmode=longest,list,full " Command-line completion mode
 let g:doge_enable_template_support = 1
 let g:doge_debug = 1
+set statusline+=%F  " Show full file path in statusline
 
 " For typespec
 augroup typespec
