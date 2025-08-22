@@ -1,6 +1,6 @@
 " Fix slow load vue files
 let g:polyglot_disabled = ['vue']" Plugin Manager
-let mapleader=','
+let mapleader=' '
 
 " ---------- General settings ----------
 syntax on
@@ -77,6 +77,9 @@ call plug#begin('~/.vim/plugged')
 " Syntax Highlight
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
+" Other useful plugins
+    Plug 'mbbill/undotree' " Undo tree visualization
+
 " Initialize plugin system
 call plug#end()
 
@@ -138,18 +141,18 @@ let g:lsc_auto_map = v:true
 
 " ---------- CoC autocomplete config ----------
 " symbol rename
-nmap <Space>rn <Plug>(coc-rename)
-" nmap <silent> <Space>d <Plug>(coc-definition)
-nmap <silent> <Space>d :call CocAction('jumpDefinition', 'tabe')<CR>
-nmap <silent> <Space>i <Plug>(coc-implementation)
-nmap <silent> <Space>f <Plug>(coc-references)
-nmap <silent> <Space>t <Plug>(coc-type-definition)
-inoremap <silent><expr> <C-Space> coc#refresh()
+nmap <Leader>rn <Plug>(coc-rename)
+" nmap <silent> <Leader>d <Plug>(coc-definition)
+nmap <silent> <Leader>d :call CocAction('jumpDefinition', 'tabe')<CR>
+nmap <silent> <Leader>i <Plug>(coc-implementation)
+nmap <silent> <Leader>f <Plug>(coc-references)
+nmap <silent> <Leader>t <Plug>(coc-type-definition)
+inoremap <silent><expr> <C-Leader> coc#refresh()
 set completeopt=menu
 " ----------
 
 " NERDTree custom shortcut
-nmap <Space>n :NERDTreeToggle<CR>
+nmap <Leader>n :NERDTreeToggle<CR>
 
 " Switch between tabs
 nnoremap <C-h> :tabprevious<CR>
@@ -161,7 +164,7 @@ nnoremap <C-[> :cprev<CR>
 nnoremap <C-]> :cnext<CR>
 
 " Clear highlight from last search
-nnoremap <Space><Space> :noh<return>
+nnoremap <Leader><Leader> :noh<return>
 
 " ---------- FZF shortcut ----------
 nnoremap <C-f> :Files<CR>
@@ -186,7 +189,7 @@ map <F3> :source ~/.vim_session <CR>
 " Open windows
 map <C-q> :tabonly<CR>
 " Close all tabs except current
-nnoremap <Space>w :Windows<CR>
+nnoremap <Leader>w :Windows<CR>
 " Delete from cursor to beginning of line
 " nnoremap <S-f> v0d
 
@@ -249,10 +252,11 @@ set number
 set relativenumber
 set hlsearch
 let g:closetag_xhtml_filenames = '*.blade.php'
-nnoremap <Space>g :tabnew <bar> :G<CR>
-nnoremap <Space>l :Locate $PWD <CR>
+nnoremap <Leader>g :tabnew <bar> :G<CR>
+nnoremap <Leader>l :Locate $PWD <CR>
 vnoremap <Tab> <S->>
 vnoremap <S-Tab> <S-<>
+nnoremap <Leader>u :UndotreeToggle<CR>
 set guicursor=n-v-c-i:block " Set cursor to block in normal, visual, command and insert mode
 set guicursor-=a:blinkon0 " Disable cursor blinking
 set wildmode=longest,list,full " Command-line completion mode
@@ -343,38 +347,3 @@ highlight docTags ctermfg=GREEN guifg=#4CAF50
 " @implNote: Provides implementation details or considerations for developers.
 " @implSpec: Specifies implementation-specific behavior or constraints for a method.
 " @experimental: Marks a feature as experimental, meaning it may change or be removed in future versions.
-" ## added by OPAM user-setup for vim / base ## d611dd144a5764d46fdea4c0c2e0ba07 ## you can edit, but keep this line
-
-" ---------- OCaml ----------
-
-let s:opam_share_dir = system("opam var share")
-let s:opam_share_dir = substitute(s:opam_share_dir, '[\r\n]*$', '', '')
-
-let s:opam_configuration = {}
-
-function! OpamConfOcpIndent()
-  execute "set rtp^=" . s:opam_share_dir . "/ocp-indent/vim"
-endfunction
-let s:opam_configuration['ocp-indent'] = function('OpamConfOcpIndent')
-
-function! OpamConfOcpIndex()
-  execute "set rtp+=" . s:opam_share_dir . "/ocp-index/vim"
-endfunction
-let s:opam_configuration['ocp-index'] = function('OpamConfOcpIndex')
-
-function! OpamConfMerlin()
-  let l:dir = s:opam_share_dir . "/merlin/vim"
-  execute "set rtp+=" . l:dir
-endfunction
-let s:opam_configuration['merlin'] = function('OpamConfMerlin')
-
-let s:opam_packages = ["ocp-indent", "ocp-index", "merlin"]
-let s:opam_available_tools = []
-for tool in s:opam_packages
-  " Respect package order (merlin should be after ocp-index)
-  if isdirectory(s:opam_share_dir . "/" . tool)
-    call add(s:opam_available_tools, tool)
-    call s:opam_configuration[tool]()
-  endif
-endfor
-" ## end of OPAM user-setup addition for vim / base ## keep this line
